@@ -55,9 +55,6 @@ jobs:
         df -hT $PWD
         git clone $REPO_URL -b $REPO_BRANCH openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
-        
-    - name: SSH to Actions
-      uses: rdp-studio/ssh2actions@v2.0.0
             
 
     - name: 加载自定义feeds
@@ -80,6 +77,9 @@ jobs:
         chmod +x $DIY_P2_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
+
+    - name: SSH to Actions
+      uses: rdp-studio/ssh2actions@v2.0.0
 
     - name: 下载编译所需文件(dl库)
       id: package
@@ -153,17 +153,17 @@ jobs:
         body_path: release.txt
         files: ${{ env.FIRMWARE }}/*
 
-    - name: 删除工作流运行
-      uses: Mattraks/delete-workflow-runs@main
-      with:
-        retain_days: 0
-        keep_minimum_runs: 2
+    # - name: 删除工作流运行
+    #   uses: Mattraks/delete-workflow-runs@main
+    #   with:
+    #     retain_days: 0
+    #     keep_minimum_runs: 2
 
-    - name: 删除旧版本
-      uses: dev-drprasad/delete-older-releases@master
-      if: env.UPLOAD_RELEASE == 'true' && !cancelled()
-      with:
-        keep_latest: 3
-        delete_tags: true
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    # - name: 删除旧版本
+    #   uses: dev-drprasad/delete-older-releases@master
+    #   if: env.UPLOAD_RELEASE == 'true' && !cancelled()
+    #   with:
+    #     keep_latest: 3
+    #     delete_tags: true
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -19,6 +19,8 @@ env:
       REPO_URL: https://github.com/coolsnowwolf/lede.git
       REPO_BRANCH: master
       FEEDS_CONF: feeds.conf.default
+      DIY_P1_SH: redmi-ax6000-1.sh
+      DIY_P2_SH: redmi-ax6000-2.sh
       UPLOAD_BIN_DIR: true
       UPLOAD_FIRMWARE: true
       UPLOAD_RELEASE: true
@@ -31,6 +33,24 @@ jobs:
     steps:
     - name: 检出仓库数据
       uses: actions/checkout@main
+
+    - name: 检查服务器配置
+      run: |
+        echo "警告⚠"
+        echo "分配的服务器性能有限，若选择的插件过多，务必注意CPU性能！"
+        echo "云编译建议取消勾选Node.js及其相关插件！"
+        echo "已知CPU型号（降序）：8370C,8272CL,8171M,E5系列"
+        echo "--------------------------CPU信息--------------------------"
+        echo "CPU物理数量:$(cat /proc/cpuinfo| grep "physical id"| sort| uniq| wc -l)"
+        echo -e "CPU核心及版本信息：$(cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c) \n"
+        echo "--------------------------内存信息--------------------------"
+        echo "已安装内存详细信息："
+        sudo lshw -short -C memory | grep GiB
+        echo -e "\n"
+        echo "--------------------------硬盘信息--------------------------"
+        echo -e  "硬盘数量：$(ls /dev/sd* | grep -v [1-9] | wc -l) \n"
+        echo "硬盘详情："
+        df -Th
         
     - name: 初始化环境
       env:
@@ -49,7 +69,7 @@ jobs:
           sudo -E timedatectl set-timezone "Asia/Shanghai"
 
     - name: 拉取OpenWrt仓库
-      # working-directory: /workdir
+      working-directory: /workdir
       run: |
         df -hT $PWD
         git clone $REPO_URL -b $REPO_BRANCH openwrt
@@ -60,15 +80,17 @@ jobs:
       working-directory: ./openwrt
       run: |
         ./scripts/feeds update -a && ./scripts/feeds install -a
-        ./scripts/feeds update -a && ./scripts/feeds install -a
+
 
     - name: 加载自定义配置
       env:
         CONFIG_FILE: 'Redmi-Ax6000.config'
       run: |
+        [ -e files ] && mv files openwrt/files
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
-         chmod +x ./redmi-ax6000-1.sh && ./redmi-ax6000-2.sh
-        cd openwrt && make defconfig
+        chmod +x $DIY_P2_SH
+        cd openwrt
+        $GITHUB_WORKSPACE/$DIY_P2_SH
         
       
 

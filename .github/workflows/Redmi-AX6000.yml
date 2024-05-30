@@ -19,9 +19,6 @@ env:
       REPO_URL: https://github.com/coolsnowwolf/lede.git
       REPO_BRANCH: master
       FEEDS_CONF: feeds.conf.default
-      CONFIG_FILE: Redmi-Ax6000.config
-      DIY_P1_SH: Redmi_ax6000/1.sh
-      DIY_P2_SH: Redmi_ax6000/2.sh
       UPLOAD_BIN_DIR: true
       UPLOAD_FIRMWARE: true
       UPLOAD_RELEASE: true
@@ -62,13 +59,9 @@ jobs:
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
             
 
-    - name: 加载自定义feeds
+    - name: 更新安装feeds
+      working-directory: ./openwrt
       run: |
-        [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
-        chmod +x $DIY_P1_SH
-        cd openwrt
-        $GITHUB_WORKSPACE/$DIY_P1_SH
-
         ./scripts/feeds update -a && ./scripts/feeds install -a
         ./scripts/feeds update -a && ./scripts/feeds install -a
 
@@ -77,7 +70,7 @@ jobs:
         CONFIG_FILE: 'Redmi-Ax6000.config'
       run: |
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
-         chmod +x Redmi_ax6000/1.sh && Redmi_ax6000/2.sh
+         chmod +x ./redmi-ax6000-1.sh && ./redmi-ax6000-2.sh
         cd openwrt && make defconfig
         
       

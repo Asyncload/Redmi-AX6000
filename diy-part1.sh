@@ -15,5 +15,7 @@
 
 # Add a feed source
 echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
-echo `src-git wiwiz https://github.com/wiwizcom/WiFiPortal' >>feeds.conf.default
+echo 'src-git wiwiz https://github.com/wiwizcom/WiFiPortal'>>feeds.conf.default
+
+
 #echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default

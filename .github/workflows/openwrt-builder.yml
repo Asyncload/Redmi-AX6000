@@ -22,7 +22,7 @@ env:
       CONFIG_FILE: .config
       DIY_P1_SH: diy-part1.sh
       DIY_P2_SH: diy-part2.sh
-      UPLOAD_BIN_DIR: false
+      UPLOAD_BIN_DIR: true
       UPLOAD_FIRMWARE: true
       UPLOAD_RELEASE: true
       TZ: Asia/Shanghai
@@ -78,14 +78,14 @@ jobs:
     - name: SSH to Actions
       uses: rdp-studio/ssh2actions@v2.0.0
 
-    - name: 下载编译所需文件(dl库)
-      id: package
-      run: |
-        cd openwrt
-        make defconfig
-        make download -j10
-        find dl -size -1024c -exec ls -l {} \;
-        find dl -size -1024c -exec rm -f {} \;
+    # - name: 下载编译所需文件(dl库)
+    #   id: package
+    #   run: |
+    #     cd openwrt
+    #     make defconfig
+    #     make download -j10
+    #     find dl -size -1024c -exec ls -l {} \;
+    #     find dl -size -1024c -exec rm -f {} \;
 
     # - name: 编译固件
     #   id: compile
@@ -104,11 +104,11 @@ jobs:
     #     echo -e "$(nproc) thread build."
     #     make -j$(nproc) V=s
 
-    - name: 编译固件
-      working-directory: ./openwrt
-      run: |
-        echo -e "$(nproc) thread compile"
-        make -j$(nproc) || make -j6 || make -j8 V=s
+    # - name: 编译固件
+    #   working-directory: ./openwrt
+    #   run: |
+    #     echo -e "$(nproc) thread compile"
+    #     make -j$(nproc) || make -j6 || make -j8 V=s
 
     - name: 检查空间使用情况
       if: (!cancelled())

@@ -86,16 +86,14 @@ jobs:
       env:
         CONFIG_FILE: 'Redmi-Ax6000.config'
       run: |
-        [ -e files ] && mv files openwrt/files
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
-        chmod +x $DIY_P2_SH
-        cd openwrt
-        $GITHUB_WORKSPACE/$DIY_P2_SH
+        chmod +x redmi-ax6000/1.sh && redmi-ax6000/2.sh
+        cd openwrt && make defconfig
         
       
 
-    # - name: SSH to Actions
-    #   uses: rdp-studio/ssh2actions@v2.0.0
+    - name: SSH to Actions
+      uses: rdp-studio/ssh2actions@v2.0.0
 
     - name: 下载编译所需文件(dl库)
       working-directory: ./openwrt

@@ -16,10 +16,10 @@ on:
     workflow_dispatch:  
     
 env:
-      REPO_URL: https://github.com/coolsnowwolf/lede.git
+      REPO_URL: https://github.com/coolsnowwolf/lede
       REPO_BRANCH: master
       FEEDS_CONF: feeds.conf.default
-      CONFIG_FILE: ./Redmi-AX6000.config
+      CONFIG_FILE: Redmi-AX6000.config
       DIY_P1_SH: redmi-ax6000-1.sh
       DIY_P2_SH: redmi-ax6000-2.sh
       UPLOAD_BIN_DIR: true
@@ -84,12 +84,7 @@ jobs:
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P1_SH
         
-    - name: 更新 feeds
-      run: cd openwrt && ./scripts/feeds update -a
-
-    - name: 安装 feeds
-      run: cd openwrt && ./scripts/feeds install -a
-
+    
     - name: 加载自定义配置
       run: |
         [ -e files ] && mv files openwrt/files
@@ -97,16 +92,22 @@ jobs:
         chmod +x $DIY_P2_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
+
+    - name: 更新 feeds
+      run: cd openwrt && ./scripts/feeds update -a
+
+    - name: 安装 feeds
+      run: cd openwrt && ./scripts/feeds install -a
+
         
       
-
-    - name: SSH to Actions
-      uses: rdp-studio/ssh2actions@v2.0.0
+    # - name: SSH to Actions
+    #   uses: rdp-studio/ssh2actions@v2.0.0
 
     - name: 下载编译所需文件(dl库)
       working-directory: ./openwrt
       run: |
-        make download -j16
+        make download -j$(nproc)
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
 
@@ -124,6 +125,7 @@ jobs:
     - name: 编译固件
       working-directory: ./openwrt
       run: |
+        cd openwrt
         echo -e "$(nproc) thread compile"
         make -j$(nproc) || make -j1 || make -j1 V=s
 

@@ -10,7 +10,7 @@
 # See /LICENSE for more information.
 #
 
-name: Build_Redmi_AX6000
+name: Build_APP
 on:
     repository_dispatch:
     workflow_dispatch:  

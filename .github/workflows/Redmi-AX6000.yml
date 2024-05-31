@@ -78,6 +78,9 @@ jobs:
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
 
+    - name: SSH Remote Commands
+      uses: appleboy/ssh-action@v1.0.3
+            
     - name: 下载dl库
       id: package
       run: |

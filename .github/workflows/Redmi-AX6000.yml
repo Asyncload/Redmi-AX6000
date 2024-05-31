@@ -51,14 +51,8 @@ jobs:
           sudo -E systemctl daemon-reload
           sudo -E apt -y autoremove --purge
           sudo -E apt clean
-          # sudo mkdir -p /workdir
-          # sudo chown $USER:$GROUPS /workdir
-          # echo "FIRMWARE_VERSION=$(date +"%y%m%d")" >> $GITHUB_ENV
-          # echo "START_DATE=$(date +'%Y年%m月%d日 %H点%M分%S秒')" >> $GITHUB_ENV
-
 
     - name: 下载源码
-      working-directory: /workdir
       run: |
         df -hT $PWD
         git clone $REPO_URL -b $REPO_BRANCH openwrt
@@ -115,17 +109,9 @@ jobs:
       run: |
           mkdir -p ./artifact/firmware
           mkdir -p ./artifact/package
-          mkdir -p ./artifact/buildinfo
           rm -rf $(find ./bin/targets/ -type d -name "packages")
           cp -rf $(find ./bin/targets/ -type f) ./artifact/firmware/
-          cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ./artifact/package/
-          cp -rf $(find ./bin/targets/ -type f -name "*.buildinfo" -o -name "*.manifest") ./artifact/buildinfo/
-          
-    - name: 上传 buildinfo 文件
-      uses: actions/upload-artifact@main
-      with:
-          name: OpenWrt_buildinfo
-          path: ./artifact/buildinfo/
+          cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ./artifact/package/        
 
     - name: 上传ipk包
       uses: actions/upload-artifact@main

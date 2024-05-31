@@ -76,9 +76,14 @@ jobs:
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
             
 
-    - name: 更新安装feeds
+    - name: 更新安装feeds源
       working-directory: ./openwrt
       run: |
+        [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
+        chmod +x $DIY_P1_SH
+        cd openwrt
+        $GITHUB_WORKSPACE/$DIY_P1_SH
+        
         ./scripts/feeds update -a && ./scripts/feeds install -a
 
 
@@ -87,8 +92,9 @@ jobs:
         CONFIG_FILE: 'Redmi-Ax6000.config'
       run: |
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
-        chmod +x redmi-ax6000/1.sh && redmi-ax6000/2.sh
-        cd openwrt && make defconfig
+        chmod +x $DIY_P2_SH
+        cd openwrt
+        $GITHUB_WORKSPACE/$DIY_P2_SH
         
       
 

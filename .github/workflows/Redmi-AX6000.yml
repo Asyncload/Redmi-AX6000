@@ -10,7 +10,7 @@
 # See /LICENSE for more information.
 #
 
-name: Build_Redmi_AX6000
+name: 红米AX6000
 on:
     repository_dispatch:
     workflow_dispatch:  
@@ -107,7 +107,7 @@ jobs:
     - name: 下载编译所需文件(dl库)
       working-directory: ./openwrt
       run: |
-        make download -j$(nproc)
+        make download -j8
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
 

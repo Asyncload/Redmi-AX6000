@@ -133,13 +133,6 @@ jobs:
       if: (!cancelled())
       run: df -hT
 
-    - name: 上传bin目录
-      uses: actions/upload-artifact@main
-      if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
-      with:
-        name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
-        path: openwrt/bin
-
     - name: 整理文件
       id: organize
       if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
@@ -148,6 +141,13 @@ jobs:
         rm -rf packages
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "status=success" >> $GITHUB_OUTPUT
+        
+    - name: 上传bin目录
+      uses: actions/upload-artifact@main
+      if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
+      with:
+        name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        path: openwrt/bin
 
     - name: 上传固件目录
       uses: actions/upload-artifact@main
@@ -155,6 +155,12 @@ jobs:
       with:
         name: OpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: ${{ env.FIRMWARE }}
+
+    - name: Upload firmware
+      uses: actions/upload-artifact@main
+      with:
+          name: OpenWrt_firmware
+          path: ./bin/targets/
 
     - name: 生成发布标签
       id: tag

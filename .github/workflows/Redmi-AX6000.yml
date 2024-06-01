@@ -37,7 +37,7 @@ jobs:
     - name: 检查项目分支
       uses: actions/checkout@main
 
-    - name: 初始化编译环境
+    - name: 初始环境
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
@@ -58,14 +58,14 @@ jobs:
         git clone $REPO_URL -b $REPO_BRANCH openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
-    - name: 加载软件源
+    - name: 加载脚本
       run: |
         [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
         chmod +x $DIY_P1_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P1_SH
 
-    - name: 更新安装feeds
+    - name: 更新feeds
       run: |
         cd openwrt
         ./scripts/feeds update -a
@@ -104,7 +104,7 @@ jobs:
           du -h --max-depth=1 ./build_dir
           du -h --max-depth=1 ./bin
 
-    - name: 检查空间使用情况
+    - name: 空间情况
       if: (!cancelled())
       run: df -hT
 

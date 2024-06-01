@@ -25,8 +25,8 @@ env:
   DIY_P1_SH: redmi-ax6000-1.sh
   DIY_P2_SH: redmi-ax6000-2.sh
   UPLOAD_BIN_DIR: true
-  # UPLOAD_FIRMWARE: true
-  # UPLOAD_RELEASE: true
+  UPLOAD_FIRMWARE: true
+  UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
 
 jobs:
@@ -84,7 +84,7 @@ jobs:
       run: |
         cd openwrt
         make defconfig
-        make download -j16
+        make download -j10
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
 
@@ -93,7 +93,7 @@ jobs:
       run: |
           cd openwrt
           echo -e "$(nproc) thread compile"
-          make -j$(nproc) || make -j2 || make -j2 V=s
+          make -j$(nproc) || make -j6 || make -j6 V=s
           echo "======================="
           echo "Space usage:"
           echo "======================="

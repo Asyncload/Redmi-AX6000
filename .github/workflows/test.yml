@@ -66,7 +66,7 @@ jobs:
           sudo -E systemctl daemon-reload
           sudo -E apt -y autoremove --purge
           sudo -E apt clean
-          sudo -E timedatectl set-timezone "Asia/Shanghai"
+          
     - name: 拉取OpenWrt仓库
       # working-directory: /workdir
       run: |
@@ -106,23 +106,15 @@ jobs:
       run: |
         cd openwrt
         echo -e "$(nproc) thread compile"
-        make -j$(nproc) || make -j6 || make -j6 V=s
-        echo "status=success" >> $GITHUB_OUTPUT
-        grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
-        [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
-        echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
+        make -j6 V=s
+        
 
 
     - name: 检查空间使用情况
       if: (!cancelled())
       run: df -hT
 
-    - name: 上传配置
-      if: env.UPLOAD_CONFIG == 'true'
-      uses: actions/upload-artifact@main
-      with:
-        name: .config_${{ env.CODE }}_${{ env.TARGET_PROFILE }}_${{ env.Compile_Date }}
-        path: config.txt
+    
         
     - name: 上传文件
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
@@ -131,28 +123,7 @@ jobs:
         name: filename+ipk_${{ env.CODE }}_${{ env.TARGET_PROFILE }}_${{ env.Compile_Date }}
         path: openwrt/bin            
     
-    - name: 整理文件
-      id: organizer
-      run: |
-        if [ "${AUTOMATIC_AMLOGIC}" == "true" ]; then
-          source "${PATH1}/common.sh" && Diy_amlogic
-        fi
-        cd openwrt
-        echo "文件系统        类型   容量  已用  可用 使用% 挂载点"
-        df -hT $PWD
-        cp -Rf bin/targets/*/* "${Home}"/upgrade
-        cd bin/targets/*/*
-        find -name "*buildinfo*" | xargs -i rm -rf {}
-        find -name "*sha256sums*" | xargs -i rm -rf {}
-        find -name "*manifest*" | xargs -i rm -rf {}
-        find -name "*vmlinuz*" | xargs -i rm -rf {}
-        find -name "*Image*" | xargs -i rm -rf {}
-        find -name "*kernel.bin*" | xargs -i rm -rf {}
-        rm -rf packages
-        rename -v "s/^openwrt/${{ env.date1 }}-${{ env.CODE }}/" *
-        echo "FIRMWARE=$PWD" >> $GITHUB_ENV
-        echo "BOT=TRUE" >> $GITHUB_ENV
-        echo "::set-output name=status::success"    
+        
         
     - name: 上传固件
       if: steps.organizer.outputs.status == 'success' && env.UPLOAD_FIRMWARE == 'true'

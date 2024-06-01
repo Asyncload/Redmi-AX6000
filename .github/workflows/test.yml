@@ -87,6 +87,12 @@ jobs:
         chmod +x $DIY_P2_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
+
+    - name: 下载编译所需文件(dl库)
+      working-directory: ./openwrt
+      run: |
+        make download -j8
+        make download -j8
         
       
     # - name: SSH to Actions

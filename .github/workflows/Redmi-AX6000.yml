@@ -24,7 +24,7 @@ env:
   CONFIG_FILE: redmi-ax6000.config
   DIY_P1_SH: redmi-ax6000-1.sh
   DIY_P2_SH: redmi-ax6000-2.sh
-  # UPLOAD_BIN_DIR: true
+  UPLOAD_BIN_DIR: true
   # UPLOAD_FIRMWARE: true
   # UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
@@ -102,6 +102,13 @@ jobs:
           du -h --max-depth=1 ./ --exclude=build_dir --exclude=bin
           du -h --max-depth=1 ./build_dir
           du -h --max-depth=1 ./bin
+
+    - name: 上传bin目录
+      uses: actions/upload-artifact@main
+      if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
+      with:
+        name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        path: openwrt/bin
           
     - name: 整理固件
       run: |

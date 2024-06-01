@@ -81,7 +81,7 @@ jobs:
         
     - name: 加载自定义配置
       env:
-        CONFIG_FILE: 'redmi-ax6000.config'
+        CONFIG_FILE: 'redmi-ax6000-22.config'
       run: |
         [ -e files ] && mv files openwrt/files
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config

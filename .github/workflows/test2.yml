@@ -1,4 +1,4 @@
-name: Build_Redmi_AX6000
+name: 红米ax6000 测试
 on:
     repository_dispatch:
     workflow_dispatch:  

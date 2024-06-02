@@ -8,7 +8,7 @@
 #
 # This is free software, licensed under the MIT License.
 # See /LICENSE for more information.
-#
+# DIY扩展 在此脚本 增加插件
 
 # 修改默认IP 10.0.0.1
 sed -i 's/10.0.1.1/10.0.0.1/g' package/base-files/files/bin/config_generate

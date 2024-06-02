@@ -15,7 +15,7 @@ env:
       TZ: Asia/Shanghai
 
 jobs:
-  build:
+    build:
     runs-on: ubuntu-latest
 
     steps:

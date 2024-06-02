@@ -3,7 +3,7 @@ on:
     repository_dispatch:
     workflow_dispatch:  
     
-env:
+    env:
       REPO_URL: https://github.com/coolsnowwolf/lede.git
       REPO_BRANCH: master
       FEEDS_CONF: feeds.conf.default
@@ -13,7 +13,6 @@ env:
       UPLOAD_FIRMWARE: true
       UPLOAD_RELEASE: true
       TZ: Asia/Shanghai
-
 jobs:
     build:
     runs-on: ubuntu-latest

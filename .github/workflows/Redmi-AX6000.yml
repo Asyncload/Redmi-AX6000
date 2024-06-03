@@ -144,7 +144,7 @@ jobs:
       with:
         name: OpenWrt_buildinfo
         run: |
-        cd openwrt
+            cd openwrt
         path: ./artifact/buildinfo/
 
     - name: Upload package
@@ -152,7 +152,7 @@ jobs:
       with:
         name: OpenWrt_package
         run: |
-        cd openwrt
+            cd openwrt
         path: ./artifact/package/
 
     - name: Upload firmware
@@ -160,6 +160,6 @@ jobs:
       with:
         name: OpenWrt_firmware
         run: |
-        cd openwrt
+            cd openwrt
         path: ./bin/targets/
           

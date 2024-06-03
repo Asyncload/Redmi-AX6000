@@ -143,17 +143,23 @@ jobs:
       uses: actions/upload-artifact@main
       with:
         name: OpenWrt_buildinfo
+        run: |
+        cd openwrt
         path: ./artifact/buildinfo/
 
     - name: Upload package
       uses: actions/upload-artifact@main
       with:
         name: OpenWrt_package
+        run: |
+        cd openwrt
         path: ./artifact/package/
 
     - name: Upload firmware
       uses: actions/upload-artifact@main
       with:
         name: OpenWrt_firmware
+        run: |
+        cd openwrt
         path: ./bin/targets/
           

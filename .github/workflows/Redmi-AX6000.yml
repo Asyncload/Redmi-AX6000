@@ -14,8 +14,9 @@ on:
   repository_dispatch:
   workflow_dispatch: 
   schedule:
-    - cron: 0 21 * * * 
-# 国际时间21:00，北京时间凌晨5:00执行任务(+8小时)
+    - cron: 0 18 * * * 
+# 分 时 日 月 星期
+# 国际时间18:00，北京时间凌晨2:00左右执行任务(+8小时)
 
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede

@@ -8,7 +8,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
-name: 红米AX6000
+name: 红米AX6000_lede
 
 on:
   repository_dispatch:

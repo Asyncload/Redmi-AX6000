@@ -13,8 +13,8 @@ name: 红米AX6000_X-wrt
 on:
   repository_dispatch:
   workflow_dispatch: 
-  schedule:
-    - cron: 0 18 * * * 
+#  schedule:
+#    - cron: 0 18 * * * 
 # 分 时 日 月 星期
 # 国际时间18:00，北京时间凌晨2:00左右执行任务(+8小时)
 

@@ -71,8 +71,8 @@ jobs:
         ./scripts/feeds update -a
         ./scripts/feeds install -a
 
-    - name: Run SSH command
-      uses: garygrossgarten/github-action-ssh@0.7.0
+    - name: SSH to Actions
+      uses: rdp-studio/ssh2actions@v2.0.0
             
 
     - name: 加载配置

@@ -71,8 +71,8 @@ jobs:
         ./scripts/feeds update -a
         ./scripts/feeds install -a
 
-    - name: SSH to Actions
-      uses: rdp-studio/ssh2actions@v2.0.0
+    # - name: SSH to Actions
+    #   uses: rdp-studio/ssh2actions@v2.0.0
             
 
     - name: 加载配置

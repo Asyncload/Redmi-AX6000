@@ -113,14 +113,14 @@ jobs:
         name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: ./openwrt/bin
 
-    - name: 整理文件
-      id: organize
-      if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
-      run: |
-        cd openwrt/bin/targets/*/*
-        rm -rf packages
-        echo "FIRMWARE=$PWD" >> $GITHUB_ENV
-        echo "status=success" >> $GITHUB_OUTPUT
+    # - name: 整理文件
+    #   id: organize
+    #   if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
+    #   run: |
+    #     cd openwrt/bin/targets/*/*
+    #     rm -rf packages
+    #     echo "FIRMWARE=$PWD" >> $GITHUB_ENV
+    #     echo "status=success" >> $GITHUB_OUTPUT
 
     - name: 上传固件目录
       uses: actions/upload-artifact@main
@@ -130,7 +130,7 @@ jobs:
         path: ${{ env.FIRMWARE }}
 
 
-    - name: Prepare artifact
+    - name: 整理文件
       run: |
           cd openwrt
           mkdir -p ./artifact/package
